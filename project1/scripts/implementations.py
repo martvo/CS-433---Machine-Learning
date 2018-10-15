@@ -1,10 +1,16 @@
+import proj1_helpers
+
 def least_squares(y, tx):
     """calculate the least squares solution."""
     N = tx.shape[0]
     w = np.linalg.solve(np.transpose(tx).dot(tx),np.transpose(tx).dot(y))
     mse = 1/(2*N)*sum((y-tx.dot(w))**2)
-    
     return (mse, w)
+
+def compute_gradient(y, tx, w):
+    err = y - tx.dot(w)
+    grad = -tx.T.dot(err) / len(err)
+    return err, grad
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     ws = [initial_w]
@@ -21,3 +27,8 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
         #      bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
     return losses, ws
+
+if __name__ == "__main__":
+    proj1_helpers.load_csv_data("../data/train.csv.zip")
+    print("Her")
+
