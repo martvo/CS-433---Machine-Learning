@@ -2,12 +2,11 @@ from proj1_helpers import load_csv_data, predict_labels, create_csv_submission
 import numpy as np
 
 
-def least_squares(y, tx, w):
+def least_squares(y, tx):
     """ Least squares using the normal equation """
-
+    w = np.linalg.solve(tx.T.dot(tx), tx.T.dot(y))
     loss = compute_loss(y, tx, w)
-    grad, error = compute_gradient(y, tx, w)
-    return loss, grad, error
+    return loss, w
 
 
 def compute_loss(y, tx, w):
