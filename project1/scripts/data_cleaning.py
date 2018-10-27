@@ -12,6 +12,13 @@ def create_poly_features(data, degrees):
     :param degrees:
     :return np.ndarray:
     """
+    
+    """
+    ************************************************************************************
+    DO NOT NEED TO ADD THE 1'S AS WE ARE NORMALIZING WITH MEAN AND STD WHICH WILL MAKE TE VALUES EQUAL TO ZERO
+    AND THE WEIGHT WILL NEVER PLAY A PART OF OUT MODEL AS ITS W*0
+    ************************************************************************************
+    """
     new_data = []
     for deg in range(1, degrees + 1):
         new_data.append(np.power(data, deg))
@@ -72,6 +79,7 @@ def mean_std_normalization(data, data_mean=[], data_std=[]):
     return np.divide(np.subtract(data, data_mean), data_std), data_mean, data_std
 
 
+
 def mean_std_unnormalize(data, data_mean, data_std):
     """
     Returns the data matrix unnormalized. PS: data_mean and data_std MUST be the same as the mean and std that normalized
@@ -79,7 +87,7 @@ def mean_std_unnormalize(data, data_mean, data_std):
     :param data:
     :param data_mean:
     :param data_std:
-    :return np.ndmatrix:
+    :return: np.ndmatrix
     """
     return np.add(np.multiply(data, data_std), data_mean)
 
@@ -91,14 +99,15 @@ if __name__ == "__main__":
     PRI_jet_num = x_train[:, COLUMN_TO_DROP]
     x_train = np.delete(x_train, COLUMN_TO_DROP, axis=1)
     print(x_train.shape)
+
     x_train = replace_undefined(x_train, UNDEFINED_VALUE, 0.0)
     x_train = create_poly_features(x_train, 3)
-    print(x_train[0][0])
     print(x_train.shape)
 
     norm_x_train, data_mean, data_std = mean_std_normalization(x_train)
-    print(norm_x_train[0][0])
     print(norm_x_train.shape)
+
+    mean_std_normalization(np.random.rand(2, 3))
 
     unnorm_x_train = mean_std_unnormalize(norm_x_train, data_mean, data_std)
     print(unnorm_x_train[0][0])
