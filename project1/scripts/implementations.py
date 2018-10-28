@@ -62,6 +62,30 @@ def ridge_regression(y, tx, lambda_):
     return loss, w
 
 
+def logistic_regression(y, x, inital_w, max_iters, gamma):
+    loss = []
+    weight_list = [inital_w]
+    w = inital_w
+    for i in range(max_iters):
+        new_loss = logistic_regression_loss(y, x, w)
+        w = w - gamma * logistic_regression_gradient(y, x, w)
+        loss.append(new_loss)
+        weight_list.append(w)
+    return loss, weight_list
+
+
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
+    """regularized logistic regression using gradient descent."""
+    ws = [initial_w]
+    losses = []
+    w = initial_w
+    for n_iter in range(max_iters):
+        loss, gradient = penalized_logistic_regression(y, tx, w, lambda_)
+        w -= gamma * gradient
+        ws.append(w)
+        losses.append(loss)
+    return losses[-1], ws[-1]
+
 
 if __name__ == "__main__":
     y_train, x_train, ids_train = load_csv_data("../data/train.csv")

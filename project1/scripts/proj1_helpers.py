@@ -88,12 +88,14 @@ def compute_gradient(y, tx, w):
     grad = -tx.T.dot(err) / len(err)
     return grad, err
 
+
 def build_poly(x, degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
     poly = np.ones((len(x), 1))
     for deg in range(1, degree+1):
         poly = np.c_[poly, np.power(x, deg)]
     return poly
+
 
 def split_data(x, y, ratio, myseed=1):
     """split the dataset based on the split ratio."""
@@ -112,3 +114,24 @@ def split_data(x, y, ratio, myseed=1):
     y_te = y[index_te]
     return x_tr, y_tr, x_te, y_te
 
+
+def sigmoid(x):
+    return 1.0 / (1.0 + np.exp(-x))
+
+
+def logistic_regression_loss(y, x, w):
+    z_logistic = sigmoid(x.dot(w))
+    loss = np.transpose(y).dot(np.log(z_logistic)) + np.transpose(1 - y).dot(np.log(1 - z_logistic))
+    return -loss # Eller np.squeeze(-loss)
+
+
+def logistic_regression_gradient(y, x, w):
+    z_logistic = sigmoid(x.dot(w))
+    return np.transpose(x).dot(z_logistic - y)
+
+
+def penalized_logistic_regression(y, tx, w, lambda_):
+    """return the loss, and gradient."""
+    loss = logistic_regression_loss(y, tx, w) + lambda_ * np.squeeze(w.T.dot(w))
+    gradient = logistic_regression_gradient(y, tx, w) + 2 * lambda_ * w
+    return loss, gradient

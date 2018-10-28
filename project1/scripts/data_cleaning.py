@@ -72,10 +72,12 @@ def precentage_is_undefined(data):
 def mean_std_normalization(data, data_mean=[], data_std=[]):
     """
     Normalize the data matrix with (data - mean(data)) / std(data)
+    :param data_std:
+    :param data_mean:
     :param data:
     :return np.ndmatrix, np.ndarray, np.ndarray:
     """
-    if (len(data_mean) == 0 and len(data_std) == 0):
+    if len(data_mean) == 0 and len(data_std) == 0:
         data_mean = np.mean(data, axis=0)
         data_std = np.std(data, axis=0)
     return np.divide(np.subtract(data, data_mean + 1), data_std), data_mean, data_std
