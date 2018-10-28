@@ -58,7 +58,7 @@ def ridge_regression(y, tx, lambda_):
     a = tx.T.dot(tx) + aI
     b = tx.T.dot(y)
     w = np.linalg.solve(a, b)
-    loss = compute_loss(y,tx,w)
+    loss = compute_loss(y, tx, w)
     return loss, w
 
 
@@ -71,6 +71,7 @@ def logistic_regression(y, x, inital_w, max_iters, gamma):
         w = w - gamma * logistic_regression_gradient(y, x, w)
         loss.append(new_loss)
         weight_list.append(w)
+        print("Loss in iteration " + str(i) + ": " + str(new_loss))
     return loss, weight_list
 
 
