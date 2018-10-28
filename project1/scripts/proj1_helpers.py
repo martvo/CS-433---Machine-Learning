@@ -125,7 +125,6 @@ def logistic_regression_loss(y, x, w):
     loss = 0
     for i in range(len(y)):
         z_logistic = x[i].dot(w)
-
         if np.max(z_logistic) > 700:
             loss += z_logistic
         else:

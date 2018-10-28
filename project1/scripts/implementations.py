@@ -33,7 +33,7 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma, batch_size):
     w = initial_w
     for n_iter in range(max_iters): 
         for by, btx in batch_iter(y,tx, batch_size):
-            grad, error = compute_gradient(y, tx, w)
+            grad, error = compute_gradient(by, btx, w)
             loss = calculate_mse(error)
             # ***************************************************
             # INSERT YOUR CODE HERE
@@ -63,15 +63,20 @@ def ridge_regression(y, tx, lambda_):
 
 
 def logistic_regression(y, x, inital_w, max_iters, gamma):
+    threshold = 1e-8
+    batch_size = int(np.floor(len(y) / 10))
     loss = []
     weight_list = [inital_w]
     w = inital_w
     for i in range(max_iters):
-        new_loss = logistic_regression_loss(y, x, w)
-        w = w - gamma * logistic_regression_gradient(y, x, w)
-        loss.append(new_loss)
-        weight_list.append(w)
-        print("Loss in iteration " + str(i) + ": " + str(new_loss))
+        for by, btx in batch_iter(y, x, batch_size):
+            new_loss = logistic_regression_loss(by, btx, w)
+            w -= gamma * logistic_regression_gradient(by, btx, w)
+            loss.append(new_loss)
+            weight_list.append(w)
+            print("Loss in iteration " + str(i + 1) + ": " + str(new_loss))
+            if len(loss) > 1 and np.abs(loss[-1] - loss[-2]) < threshold:
+                break
     return loss, weight_list
 
 
@@ -95,4 +100,3 @@ if __name__ == "__main__":
     
     # Vi må behandle dataen vi har før vi bruker den
     # Visualiser data i en notebook, enklere der.. Kan ikke gjøre det nå pga. Anaconda er fucka..
-    
