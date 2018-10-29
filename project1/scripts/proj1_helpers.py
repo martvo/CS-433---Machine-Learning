@@ -45,6 +45,7 @@ def create_csv_submission(ids, y_pred, name):
         writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
         writer.writeheader()
         for r1, r2 in zip(ids, y_pred):
+            writer.writerow({'Id':int(r1),'Prediction':int(r2)})
             
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
@@ -70,6 +71,7 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         end_index = min((batch_num + 1) * batch_size, data_size)
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
+
             
 def build_poly(x, degree):
     """Polynomial basis functions for input data x, for j=0 up to j=degree."""
