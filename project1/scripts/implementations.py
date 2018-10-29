@@ -23,13 +23,14 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
         #print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
         #      bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
-    return losses, ws
+    return losses[-1], ws[-1]
 
 
-def least_squares_SGD(y, tx, initial_w, max_iters, gamma, batch_size):
+def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
     """Stochastic gradient descent algorithm."""
     ws = [initial_w]
     losses = []
+    batch_size = 1
     w = initial_w
     for n_iter in range(max_iters): 
         for by, btx in batch_iter(y,tx, batch_size):
@@ -43,7 +44,7 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma, batch_size):
             # store w and loss
             ws.append(w)
             losses.append(loss)
-    return losses, ws
+    return losses[-1], ws[-1]
 
 def least_squares(y, tx):
     """ Least squares using the normal equation """
@@ -64,7 +65,7 @@ def ridge_regression(y, tx, lambda_):
 
 def logistic_regression(y, x, inital_w, max_iters, gamma):
     threshold = 1e-8
-    batch_size = int(np.floor(len(y) / 10))
+    batch_size = 1
     loss = []
     weight_list = [inital_w]
     w = inital_w
@@ -74,10 +75,10 @@ def logistic_regression(y, x, inital_w, max_iters, gamma):
             w -= gamma * logistic_regression_gradient(by, btx, w)
             loss.append(new_loss)
             weight_list.append(w)
-            print("Loss in iteration " + str(i + 1) + ": " + str(new_loss))
+            # print("Loss in iteration " + str(i + 1) + ": " + str(new_loss))
             if len(loss) > 1 and np.abs(loss[-1] - loss[-2]) < threshold:
                 break
-    return loss, weight_list
+    return loss[-1], weight_list[-1]
 
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
