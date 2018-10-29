@@ -120,9 +120,17 @@ def sigmoid(x):
 
 
 def logistic_regression_loss(y, x, w):
-    z_logistic = sigmoid(x.dot(w))
-    loss = np.transpose(y).dot(np.log(z_logistic)) + np.transpose(1 - y).dot(np.log(1 - z_logistic))
-    return -loss # Eller np.squeeze(-loss)
+    # Have to calculate it in this way because of overflow in the np.exp() function
+    loss = 0
+    for i in range(len(y)):
+        z_logistic = x[i].dot(w)
+
+        if np.max(z_logistic) > 700:
+            loss += z_logistic
+        else:
+            loss += np.log(1 + np.exp(z_logistic))
+        loss -= y[i]*z_logistic
+    return loss
 
 
 def logistic_regression_gradient(y, x, w):

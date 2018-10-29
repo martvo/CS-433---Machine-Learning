@@ -75,15 +75,16 @@ def logistic_regression(y, x, inital_w, max_iters, gamma):
 
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
-    """regularized logistic regression using gradient descent."""
+    """regularized logistic regression using stochastic gradient descent."""
     ws = [initial_w]
     losses = []
     w = initial_w
     for n_iter in range(max_iters):
-        loss, gradient = penalized_logistic_regression(y, tx, w, lambda_)
-        w -= gamma * gradient
-        ws.append(w)
-        losses.append(loss)
+        for by, btx in batch_iter(y, tx, batch_size=1, num_batches=1):
+            loss, gradient = penalized_logistic_regression(y, tx, w, lambda_)
+            w = w - gradient*gamma
+            ws.append(w)
+            losses.append(loss)        
     return losses[-1], ws[-1]
 
 
