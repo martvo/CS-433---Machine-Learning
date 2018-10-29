@@ -90,7 +90,7 @@ def compute_gradient(y, tx, w):
 
 
 def build_poly(x, degree):
-    """polynomial basis functions for input data x, for j=0 up to j=degree."""
+    """Polynomial basis functions for input data x, for j=0 up to j=degree."""
     poly = np.ones((len(x), 1))
     for deg in range(1, degree+1):
         poly = np.c_[poly, np.power(x, deg)]
@@ -98,7 +98,7 @@ def build_poly(x, degree):
 
 
 def split_data(x, y, ratio, myseed=1):
-    """split the dataset based on the split ratio."""
+    """Split the dataset based on the split ratio."""
     # set seed
     np.random.seed(myseed)
     # generate random indices
@@ -142,7 +142,7 @@ def logistic_regression_gradient(y, x, w):
 
 
 def penalized_logistic_regression(y, tx, w, lambda_):
-    """return the loss, and gradient."""
+    """Return the loss, and gradient."""
     loss = logistic_regression_loss(y, tx, w) + lambda_ * np.squeeze(w.T.dot(w))
     gradient = logistic_regression_gradient(y, tx, w) + 2 * lambda_ * w
     return loss, gradient
