@@ -97,10 +97,9 @@ def build_poly(x, degree):
     return poly
 
 
-def split_data(x, y, ratio, myseed=1):
+def split_data(x, y, ratio, seed=1):
     """Split the dataset based on the split ratio."""
-    # set seed
-    np.random.seed(myseed)
+    np.random.seed(seed)
     # generate random indices
     num_row = len(y)
     indices = np.random.permutation(num_row)
