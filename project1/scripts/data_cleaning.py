@@ -12,21 +12,10 @@ def create_poly_features(data, degrees):
     :param degrees:
     :return np.ndarray:
     """
-    
-    """
-    ************************************************************************************
-    DO NOT NEED TO ADD THE 1'S AS WE ARE NORMALIZING WITH MEAN AND STD WHICH WILL MAKE TE VALUES EQUAL TO ZERO
-    AND THE WEIGHT WILL NEVER PLAY A PART OF OUT MODEL AS ITS W*0
-    ************************************************************************************
-    """
     new_data = []
-    for deg in range(1, degrees + 1):
+    for deg in range(0, degrees + 1):
         new_data.append(np.power(data, deg))
     return np.concatenate(new_data, axis=1)
-
-
-def add_bias_to_data(data):
-    return np.concatenate((np.ones(data.shape[0]).T, data), axis=1)
 
 
 def replace_undefoned_with_nan(data, undefined):
