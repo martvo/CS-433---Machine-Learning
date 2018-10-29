@@ -1,89 +1,55 @@
-# Finding the Higgs Boson
+# Machine Learning Project: Finding the Higgs Boson
 
 The Higgs boson is an elementary particle in the Standard Model of physics which explains why other particles have mass. Since it decays rapidly, scientists do not observe it directly, but rather measure its decay signature. By applying binary classification techniques, using original data from CERN, we can predict whether the decay signature of a collision event was a signal from a Higgs boson, or something else.  
 
+This is the aim of Project 1 in the Machine Learning course CS-433 at EPFL. The [project description](./project1/project1_description.pdf) can be found in PDF format. 
+
+The project includes a [Kaggle competition](https://www.kaggle.com/c/epfml18-higgs), similar to the [Higgs Boson Machine Learning Challenge](https://www.kaggle.com/c/Higgs-boson) (2014).   
+
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+First, you should place the `train.csv` and `test.csv` in a `data` folder at the root of the project. 
 
-### Prerequisites
+## Scripts
 
-What things you need to install the software and how to install them
+#### `run.py`
 
-Python version ???
+Script that generates the exact CSV file submitted on Kaggle. 
 
-```
-Give examples
-```
+#### `implementations.py` 
 
-### Installing
+Contains the six regression methods needed for the project,
 
-A step by step series of examples that tell you how to get a development env running
+* **`least_squares_GD`**: Linear regression using gradient descent
+* **`least_squares_SGD`**: Linear regression using stochastic gradient descent
+* **`least_squares`**: Least squares regression using normal equations
+* **`ridge_regression`**: Ridge regression using normal equations
+* **`logistic_regression`**: Logistic regression using stochastic gradient descent
+* **`reg_logistic_regression`**: Regularized logistic regression using stochastic gradient descent
 
-Say what the step will be
+along with necessary helper functions,
 
-```
-Give the example
-```
+* **`compute_loss`**
+* **`compute_gradient`**
+* etc.
 
-And repeat
+#### `proj1_helpers.py` 
 
-```
-until finished
-```
+Contains helper functions,
 
-End with an example of getting some data out of the system or using it for a little demo
+* **`load_csv_data`**: Loads data
+* **`predict_labels`**: Generates class predictions
+* **`create_csv_submission`**: Creates an output file in CSV format for submission to Kaggle
+* **`build_poly`**: Polynomial basis functions
+* **`split_data`**: Split the dataset based on a split ratio
 
-## Running the tests
+#### `data_cleaning.py`
 
-Explain how to run the automated tests for this system
+Contains functions to clean the dataset,
 
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* **`create_poly_features`**: Creates an array that contains the original data with polynomials
+* **`replace_undefined_with_nan`**: Turnes undefined value to NaN
+* **`replace_undefined_with_mean`**: Replace undefined value with the mean
+* **`replace_undefined`**: replace undefined values with a parameter
+* **`mean_std_normalization`**: Normalize a data matrix
+* **`mean_std_unnormalize`**: Returns a data matrix unnormalized

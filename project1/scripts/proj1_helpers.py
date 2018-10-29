@@ -46,6 +46,7 @@ def create_csv_submission(ids, y_pred, name):
         writer.writeheader()
         for r1, r2 in zip(ids, y_pred):
             writer.writerow({'Id':int(r1),'Prediction':int(r2)})
+<<<<<<< HEAD
             
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
@@ -73,6 +74,9 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
 
             
+=======
+        
+>>>>>>> 1682a246b81ce820e8214e8d3366c5fe7c2e3268
 def build_poly(x, degree):
     """Polynomial basis functions for input data x, for j=0 up to j=degree."""
     poly = np.ones((len(x), 1))
