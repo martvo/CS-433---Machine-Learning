@@ -5,7 +5,7 @@ UNDEFINED_VALUE = np.float64(-999.0)
 COLUMN_TO_DROP = 22
 
 
-def create_poly_features(data, degrees):
+def create_poly_features(data, degrees, bias=False):
     """
     Creates a np.ndarray that contains the original data with polynomials from 1 to degrees
     :param data:
@@ -13,22 +13,22 @@ def create_poly_features(data, degrees):
     :return np.ndarray:
     """
     new_data = []
-    for deg in range(0, degrees + 1):
-        new_data.append(np.power(data, deg))
+    if bias:
+        for deg in range(0, degrees + 1):
+            new_data.append(np.power(data, deg))
+    else:
+        for deg in range(1, degrees + 1):
+            new_data.append(np.power(data, deg))
     return np.concatenate(new_data, axis=1)
 
 
-def replace_undefoned_with_nan(data, undefined):
+def replace_undefined_with_mean(data, undefined):
     """
-    Turnes undefined value to NaN
+    Convert values equal to limit param to the mean of the column the value is in
     :param data:
     :param undefined:
-    :return numpy.ndarray:
+    :return:
     """
-    data[data == undefined] = np.nan
-    return data
-
-def replace_undefined_with_mean(data, undefined):
     return replace_undefined(data, undefined, np.mean(data[data != undefined], axis=0))
 
 
@@ -55,8 +55,10 @@ def mean_std_normalization(data, data_mean=[], data_std=[]):
     """
     if len(data_mean) == 0 and len(data_std) == 0:
         data_mean = np.mean(data, axis=0)
+        data = data - data_mean
         data_std = np.std(data, axis=0)
-    return np.divide(np.subtract(data, data_mean + 1), data_std), data_mean, data_std
+        data = data / data_std
+    return data, data_mean, data_std
 
 
 
@@ -92,13 +94,3 @@ if __name__ == "__main__":
     unnorm_x_train = mean_std_unnormalize(norm_x_train, data_mean, data_std)
     print(unnorm_x_train[0][0])
     print(unnorm_x_train.shape)
-
-
-# TODO:
-# remove row and column with too many -999 values
-# replace -999.0 with most frequent value in that column???
-# IKKE GJØR: -999 om til gjennomsnitt av kolonnen -> blir 0 etter vi har standarisert det
-
-# Found out:
-# 1. all features is numpy.float64
-# PRI_jet_num is a categorical value, {0, 1, 2,.....}
