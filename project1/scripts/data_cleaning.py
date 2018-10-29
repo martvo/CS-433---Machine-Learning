@@ -25,6 +25,10 @@ def create_poly_features(data, degrees):
     return np.concatenate(new_data, axis=1)
 
 
+def add_bias_to_data(data):
+    return np.concatenate((np.ones(data.shape[0]).T, data), axis=1)
+
+
 def replace_undefoned_with_nan(data, undefined):
     """
     Turnes undefined value to NaN
@@ -37,18 +41,6 @@ def replace_undefoned_with_nan(data, undefined):
 
 def replace_undefined_with_mean(data, undefined):
     return replace_undefined(data, undefined, np.mean(data[data != undefined], axis=0))
-    
-def replace_undefined_with_most_frequent(data, undefined):
-    """ HOW COULD THIS BE DONE? np.bincount only works on ints
-    Retrun data with undefined values replaced with most frequent value of that column
-    :param data:
-    :param undefined:
-    :return numpy.ndarray:
-    """
-    for i in range(data.shape[1]):
-        i_col_most_frequent = np.bincount(data[:, i]).argmax()
-        data[data == undefined] = np.float64(i_col_most_frequent)
-    return data
 
 
 def replace_undefined(data, limit, replace_with):
@@ -62,11 +54,6 @@ def replace_undefined(data, limit, replace_with):
     data[data == limit] = np.float64(replace_with)
     # return np.clip(data, lower_limit, upper_limit)
     return data
-
-
-def precentage_is_undefined(data):
-    data_nan = replace_undefoned_with_nan(data, UNDEFINED_VALUE)
-    return np.count_nonzero(~np.isnan(data_nan))
 
 
 def mean_std_normalization(data, data_mean=[], data_std=[]):

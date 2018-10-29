@@ -45,7 +45,6 @@ def create_csv_submission(ids, y_pred, name):
         writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
         writer.writeheader()
         for r1, r2 in zip(ids, y_pred):
-            writer.writerow({'Id':int(r1),'Prediction':int(r2)})
             
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
@@ -72,23 +71,6 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
             
-def calculate_mse(e):
-    """Calculate the mse for vector e."""
-    N = len(e)
-
-    loss = 1/(2*N) * np.sum(e**2, axis=0)
-    return loss
-
-def compute_loss(y, tx, w):
-    return 1/(2*tx.shape[0]) * sum((y-tx.dot(w))**2)
-
-
-def compute_gradient(y, tx, w):
-    err = y - tx.dot(w)
-    grad = -tx.T.dot(err) / len(err)
-    return grad, err
-
-
 def build_poly(x, degree):
     """Polynomial basis functions for input data x, for j=0 up to j=degree."""
     poly = np.ones((len(x), 1))
@@ -112,36 +94,3 @@ def split_data(x, y, ratio, seed=1):
     y_tr = y[index_tr]
     y_te = y[index_te]
     return x_tr, y_tr, x_te, y_te
-
-
-def sigmoid(x):
-    x[x > 700] = 700
-    return 1.0 / (1.0 + np.exp(-x))
-
-
-def logistic_regression_loss(y, x, w):
-    # Have to calculate it in this way because of overflow in the np.exp() function
-    loss = 0
-    for i in range(len(y)):
-        z_logistic = x[i].dot(w)
-
-        if np.max(z_logistic) > 700:
-            loss += z_logistic
-        else:
-            loss += np.log(1 + np.exp(z_logistic))
-
-        loss -= y[i] * (z_logistic)
-    return loss
-
-
-def logistic_regression_gradient(y, x, w):
-    z_logistic = sigmoid(x.dot(w))
-    grad = x.T.dot(z_logistic - y)
-    return grad
-
-
-def penalized_logistic_regression(y, tx, w, lambda_):
-    """Return the loss, and gradient."""
-    loss = logistic_regression_loss(y, tx, w) + lambda_ * np.squeeze(w.T.dot(w))
-    gradient = logistic_regression_gradient(y, tx, w) + 2 * lambda_ * w
-    return loss, gradient
