@@ -23,6 +23,12 @@ def create_poly_features(data, degrees, bias=False):
 
 
 def replace_undefined_with_mean(data, undefined):
+    """
+    Convert values equal to limit param to the mean of the column the value is in
+    :param data:
+    :param undefined:
+    :return:
+    """
     return replace_undefined(data, undefined, np.mean(data[data != undefined], axis=0))
 
 

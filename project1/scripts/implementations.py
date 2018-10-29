@@ -96,9 +96,6 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
         # store w and loss
         ws.append(w)
         losses.append(loss)
-        # print("Iteration " + str(n_iter) + " loss=" + str(loss))
-        #if (len(losses) > 1 and (abs(losses[-1] - losses[-2]) < 0.0001)):
-        #    break
 
     return losses[-1], ws[-1]
 
@@ -141,6 +138,7 @@ def ridge_regression(y, tx, lambda_):
 
 
 def logistic_regression(y, x, inital_w, max_iters, gamma):
+    """Logistic regression using GD"""
     threshold = 1e-5
     batch_size = 1
     loss = []
@@ -159,7 +157,7 @@ def logistic_regression(y, x, inital_w, max_iters, gamma):
 
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
-    """regularized logistic regression using stochastic gradient descent."""
+    """regularized logistic regression using gradient descent."""
     ws = [initial_w]
     losses = []
     w = initial_w
@@ -174,7 +172,3 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
 if __name__ == "__main__":
     y_train, x_train, ids_train = load_csv_data("../data/train.csv")
     y_test, x_test, ids_test = load_csv_data("../data/test.csv")
-    
-    
-    # Vi må behandle dataen vi har før vi bruker den
-    # Visualiser data i en notebook, enklere der.. Kan ikke gjøre det nå pga. Anaconda er fucka..
