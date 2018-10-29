@@ -2,7 +2,9 @@
 
 The Higgs boson is an elementary particle in the Standard Model of physics which explains why other particles have mass. Since it decays rapidly, scientists do not observe it directly, but rather measure its decay signature. By applying binary classification techniques, using original data from CERN, we can predict whether the decay signature of a collision event was a signal from a Higgs boson, or something else.  
 
-This is the aim of Project 1 in the Machine Learning course CS-433 at EPFL. The project description can be found in the PDF `project1_description.pdf`. 
+This is the aim of Project 1 in the Machine Learning course CS-433 at EPFL. The [project description](./project1/project1_description.pdf) can be found in PDF format. 
+
+The project includes a [Kaggle competition](https://www.kaggle.com/c/epfml18-higgs), similar to the [Higgs Boson Machine Learning Challenge](https://www.kaggle.com/c/Higgs-boson) (2014).   
 
 ## Getting Started
 
@@ -12,54 +14,43 @@ First, you should place the `train.csv` and `test.csv` in a `data` folder at the
 
 #### `implementations.py` 
 
-Contains bla bla
+Contains the six regression methods needed for the project,
 
-* 
+* **`least_squares_GD`**: Linear regression using gradient descent
+* **`least_squares_SGD`**: Linear regression using stochastic gradient descent
+* **`least_squares`**: Least squares regression using normal equations
+* **`ridge_regression`**: Ridge regression using normal equations
+* **`logistic_regression`**: Logistic regression using stochastic gradient descent
+* **`reg_logistic_regression`**: Regularized logistic regression using stochastic gradient descent
 
-### Installing
+along with necessary helper functions,
 
-A step by step series of examples that tell you how to get a development env running
+* **`compute_loss`**
+* **`compute_gradient`**
+* etc.
 
-Say what the step will be
+#### `proj1_helpers.py` 
 
-```
-Give the example
-```
+Contains helper functions,
 
-And repeat
+* **`load_csv_data`**: Loads data
+* **`predict_labels`**: Generates class predictions
+* **`create_csv_submission`**: Creates an output file in CSV format for submission to Kaggle
+* **`build_poly`**: Polynomial basis functions
+* **`split_data`**: Split the dataset based on a split ratio
 
-```
-until finished
-```
+#### `data_cleaning.py`
 
-End with an example of getting some data out of the system or using it for a little demo
+Contains functions to clean the dataset,
 
-## Running the tests
+* **`create_poly_features`**: Creates an array that contains the original data with polynomials
+* **`replace_undefined_with_nan`**: Turnes undefined value to NaN
+* **`replace_undefined_with_mean`**: Replace undefined value with the mean
+* **`replace_undefined`**: replace undefined values with a parameter
+* **`mean_std_normalization`**: Normalize a data matrix
+* **`mean_std_unnormalize`**: Returns a data matrix unnormalized
 
-Explain how to run the automated tests for this system
+#### `run.py`
 
-### Break down into end to end tests
+Script that generates the exact CSV file submitted on Kaggle. 
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
