@@ -130,7 +130,8 @@ def logistic_regression_loss(y, x, w):
             loss += z_logistic
         else:
             loss += np.log(1 + np.exp(z_logistic))
-        loss -= y[i]*z_logistic
+
+        loss -= y[i] * (z_logistic)
     return loss
 
 
