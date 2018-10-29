@@ -12,6 +12,10 @@ First, you should place the `train.csv` and `test.csv` in a `data` folder at the
 
 ## Scripts
 
+#### `run.py`
+
+Script that generates the exact CSV file submitted on Kaggle. 
+
 #### `implementations.py` 
 
 Contains the six regression methods needed for the project,
@@ -49,8 +53,3 @@ Contains functions to clean the dataset,
 * **`replace_undefined`**: replace undefined values with a parameter
 * **`mean_std_normalization`**: Normalize a data matrix
 * **`mean_std_unnormalize`**: Returns a data matrix unnormalized
-
-#### `run.py`
-
-Script that generates the exact CSV file submitted on Kaggle. 
-
