@@ -116,6 +116,7 @@ def split_data(x, y, ratio, myseed=1):
 
 
 def sigmoid(x):
+    x[x > 700] = 700
     return 1.0 / (1.0 + np.exp(-x))
 
 
@@ -135,7 +136,8 @@ def logistic_regression_loss(y, x, w):
 
 def logistic_regression_gradient(y, x, w):
     z_logistic = sigmoid(x.dot(w))
-    return np.transpose(x).dot(z_logistic - y)
+    grad = x.T.dot(z_logistic - y)
+    return grad
 
 
 def penalized_logistic_regression(y, tx, w, lambda_):

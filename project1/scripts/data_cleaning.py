@@ -35,7 +35,9 @@ def replace_undefoned_with_nan(data, undefined):
     data[data == undefined] = np.nan
     return data
 
-
+def replace_undefined_with_mean(data, undefined):
+    return replace_undefined(data, undefined, np.mean(data[data != undefined], axis=0))
+    
 def replace_undefined_with_most_frequent(data, undefined):
     """ HOW COULD THIS BE DONE? np.bincount only works on ints
     Retrun data with undefined values replaced with most frequent value of that column
@@ -78,7 +80,7 @@ def mean_std_normalization(data, data_mean=[], data_std=[]):
     if len(data_mean) == 0 and len(data_std) == 0:
         data_mean = np.mean(data, axis=0)
         data_std = np.std(data, axis=0)
-    return np.divide(np.subtract(data, data_mean), data_std), data_mean, data_std
+    return np.divide(np.subtract(data, data_mean + 1), data_std), data_mean, data_std
 
 
 
