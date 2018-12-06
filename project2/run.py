@@ -39,7 +39,7 @@ def run():
     augment_num = 10
 
     if not os.listdir(aug_image_dir):
-        print("Created augemented pictures")
+        print("Creating augemented pictures")
         hf.augment_images(imgs, aug_image_dir, gt_imgs, aug_gt_dir, augment_num)
     else:
         print("Augmented pictures exists")
