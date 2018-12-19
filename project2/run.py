@@ -206,10 +206,17 @@ def run():
     predictions = [hf.load_image(result_path + str(i+1) + ".png") for i in range(n)]
     
     # Show a prediction
-    image_index = 32
+    image_index = 49
     over = hf.make_img_overlay(test_imgs[image_index], predictions[image_index])
     fig1 = plt.figure(figsize=(10, 10))
     plt.imshow(over)
+    
+    # Since it looks like it is hard to predict roads that are thin and goes 45 degrees on the x-axis; try to turn each Image + and - 45
+    # degrees and then predict. Flip them back after and take the average value of the three predictions. If pixelvalue is 0 -> dont do 
+    # average as this might be parts of the Images that got lost due to the rotation.
+    # Read in as Image and rotate
+    posRot = []
+    negRot = []
     
     # Create submission
     submission_name = MODEL_NAME + ".csv"
