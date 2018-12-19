@@ -33,7 +33,6 @@ conda install ipython
 conda install jupyter
 conda install pandas
 conda install scipy
-conda install seaborn
 conda install scikit-learn
 ```
 
