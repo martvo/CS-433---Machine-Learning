@@ -24,7 +24,7 @@ Then activate the environment:
 activate deeplearning
 ```
 
-### Installing 
+### Installation 
 
 Now, install the necessary data science libraries. Make sure to install them in order listed below.
 
