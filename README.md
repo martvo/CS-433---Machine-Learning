@@ -1,1 +1,1 @@
-# Projects for the course CS-433 Machine Learning at EPFL 2018. 
+## Projects for the CS-433 Machine Learning course at EPFL the fall of 2018
