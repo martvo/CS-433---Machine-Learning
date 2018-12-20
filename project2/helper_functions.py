@@ -97,8 +97,8 @@ def augment_images(images, images_path, gts, gts_path, augment_num):
 def add_salt_pepper_noise(X_imgs):
     # Need to produce a copy as to not modify the original image
     row, col, _ = X_imgs[0].shape
-    salt_vs_pepper = 0.2
-    amount = 0.006
+    salt_vs_pepper = 0.5
+    amount = 0.004
     num_salt = np.ceil(amount * X_imgs[0].size * salt_vs_pepper)
     num_pepper = np.ceil(amount * X_imgs[0].size * (1.0 - salt_vs_pepper))
     out = []

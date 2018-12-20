@@ -33,8 +33,8 @@ def run():
     :DILATION_RATE:
     """
     
-    print(tf.VERSION)
-    print(tf.keras.__version__)
+    # print(tf.VERSION)
+    # print(tf.keras.__version__)
 
     # Load data
     training_dir = "data/training/"
@@ -99,7 +99,6 @@ def run():
     # Salt and pepper only needs to be added to the training data and not the validation or test data
     if SALT_AND_PEPPER:
         print("Adding salt and pepper to Images")
-        # Does this work when the Images are in a numpy array?
         X_train = hf.add_salt_pepper_noise(X_train)
 
     # Turning the lists into numpy array so that they will fit into the model
@@ -107,8 +106,6 @@ def run():
     y_train = np.array(y_train)
     X_valid = np.array(X_valid)
     y_valid = np.array(y_valid)
-    
-    plt.imshow(X_train[0])
 
     # Model
     print("Creating model with dropout: {}, batchnormalization: {} and kernelsize: {}, dilation_rate: {}".format(DROPOUT, BATCHNORMALIZAION, KERNEL_SIZE, DILATION_RATE))
@@ -123,6 +120,7 @@ def run():
     model_weight_name = MODEL_NAME + ".h5"
     history_name = model_weight_name[:-3] + "_history"
 
+    # Create callbacks for use in the training process
     callbacks = [
         EarlyStopping(patience=10, verbose=1, monitor='val_loss', mode='auto'),
         ReduceLROnPlateau(factor=0.1, patience=3, min_lr=0.00001, verbose=1),
@@ -131,7 +129,6 @@ def run():
     ]
 
     # Fit model IF weights don't exist, else load the weights into the model
-    
     if not any(fname == model_weight_name for fname in os.listdir(weights_path)):
         print("Fitting the model over " + str(EPOCHS) + " epochs")
         results = model.fit(X_train, y_train, batch_size=4, epochs=EPOCHS, callbacks=callbacks,
@@ -147,7 +144,7 @@ def run():
 
         # Evaluate on validation set (this must be equals to the best log_loss)
         evaluation = model.evaluate(X_valid, y_valid, verbose=1)
-        print(evaluation)
+        print("Evalutation of the model, {}: {}, {}: {}".format(model.metrics_names[0], evaluation[0], model.metrics_names[1], evaluation[1]))
     
     # Variable to hold our history
     history = {}
@@ -179,14 +176,13 @@ def run():
     n_400 = len(test_400_files)
     print("Number of Test Images: " + str(n_400))
     aug_test_imgs = [hf.load_image(aug_test_dir + "test_" + str(i+1) + ".png") for i in range(n_400)]
-
-    print("Shape of 'augmented' test data" + str(aug_test_imgs[0].shape))
     
     X_test = np.array(aug_test_imgs)
 
     # Predict on test
-    print("Predicting")
+    print("Predicting {} images".format(n_400))
     predictions = model.predict(X_test, batch_size=4)
+    print(predictions.shape)
     
     prediction_path = "data/predictions/"
     result_path = prediction_path + "result_"
@@ -202,11 +198,11 @@ def run():
     prediction_files = os.listdir(prediction_path)
     # Load all images and groundtruths
     n = len(prediction_files)
-    print(n)
     predictions = [hf.load_image(result_path + str(i+1) + ".png") for i in range(n)]
     
     # Show a prediction
-    image_index = 49
+    image_index = 19
+    print("index :" + str(image_index + 1))
     over = hf.make_img_overlay(test_imgs[image_index], predictions[image_index])
     fig1 = plt.figure(figsize=(10, 10))
     plt.imshow(over)
@@ -215,11 +211,11 @@ def run():
     # degrees and then predict. Flip them back after and take the average value of the three predictions. If pixelvalue is 0 -> dont do 
     # average as this might be parts of the Images that got lost due to the rotation.
     # Read in as Image and rotate
-    posRot = []
-    negRot = []
+    # Not enough time for this :')
     
     # Create submission
     submission_name = MODEL_NAME + ".csv"
+    submission_name = "test.csv"
     path_to_submission = "submissions/" + submission_name
     prediction_path = "data/predictions/"
     prediction_name = "result_"
@@ -231,6 +227,6 @@ def run():
     for i in range(len(number_of_predictions)):
         path_to_predictions.append(prediction_path + prediction_name + str(i+1) + ".png")
 
-    print("Number of predictions " + str(len(path_to_predictions)))
+    print("Creating submission: {}".format(submission_name))
 
     submission_helper.masks_to_submission(path_to_submission, *path_to_predictions)
