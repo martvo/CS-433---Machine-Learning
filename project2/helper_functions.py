@@ -51,6 +51,11 @@ def img_crop(im, w, h):
 
 
 def augment_images(images, images_path, gts, gts_path, augment_num):
+    """
+    This function will use the ImageDataGenerator from keras to create augmented images based on the data_gen_args dictionary
+    Every picture is saved to images_path and groundtruths to gts_path.
+    augment_num is the number of aigmented images that will be created for each image
+    """
     data_gen_args  = dict(horizontal_flip=True, 
                           vertical_flip=True, 
                           height_shift_range=0.2, 
@@ -68,20 +73,13 @@ def augment_images(images, images_path, gts, gts_path, augment_num):
     
     for i in range(len(images)):
         image_expanded = np.expand_dims(images[i], 0)
-        gt_expanded = np.expand_dims(gts[i], 2)  # 1 i siste dimensjon gir gray scale???
+        
+        # Expand to fitt the restrictions of ImageDataGenerator.flow()
+        gt_expanded = np.expand_dims(gts[i], 2) 
         gt_expanded = np.expand_dims(gt_expanded, 0)
 
         seed = 12345
         
-        # Nå bør denne også funke!!!
-        """
-        aug_iter = image_gen.flow(image_expanded, seed=seed, save_to_dir=images_path, save_prefix=save_prefix+str(i))
-        gt_iter = gt_gen.flow(gt_expanded, seed=seed, save_to_dir=gts_path, save_prefix=save_prefix+str(i))
-
-        for j in range(augment_num):
-            next(aug_iter)
-            next(gt_iter)
-        """
         j = 0
         for b in image_gen.flow(image_expanded, seed=seed+j, save_to_dir=images_path, save_prefix=save_prefix+str(i)):
             j += 1
@@ -95,7 +93,12 @@ def augment_images(images, images_path, gts, gts_path, augment_num):
                 break
                 
 def add_salt_pepper_noise(X_imgs):
-    # Need to produce a copy as to not modify the original image
+    """
+    This function will add salt and pepper noise to the images in X_imgs
+    salt_vs_pepper is the precentage of salt to pepper noise
+    amount decides the amount of noise to be added to the image
+    returns a list of images with salt and pepper nise
+    """
     row, col, _ = X_imgs[0].shape
     salt_vs_pepper = 0.5
     amount = 0.004
@@ -117,6 +120,10 @@ def add_salt_pepper_noise(X_imgs):
 
 
 def create_test_images(path, save_path, test_files, num_pictures, image_size):
+    """
+    This function will resize the pictures in the path to the size of image_size
+    One after one will they be augmented and saved to save_path
+    """
     for i in range(num_pictures):
         img = Image.open(path + test_files[i] + "/" + os.listdir(path + test_files[i])[0])
         img = img.resize(image_size, Image.ANTIALIAS)
@@ -127,6 +134,10 @@ def create_test_images(path, save_path, test_files, num_pictures, image_size):
         
 
 def make_img_overlay(img, predicted_img):
+    """
+    This function will add a overlay to img based on the values from predicted_img
+    returns a Image object
+    """
     w = img.shape[0]
     h = img.shape[1]
     color_mask = np.zeros((w, h, 3), dtype=np.uint8)
@@ -140,6 +151,9 @@ def make_img_overlay(img, predicted_img):
 
 
 def plot_history(history):
+    """
+    This function will plot the history directory to a plot showing the training loss and validation loss
+    """
     plt.figure(figsize=(8, 8))
     plt.title("Learning curve")
     plt.plot(history["loss"], label="loss")
