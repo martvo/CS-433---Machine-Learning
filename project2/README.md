@@ -31,6 +31,7 @@ Now, install the necessary data science libraries. Make sure to install them in 
 ```
 conda install ipython
 conda install jupyter
+conda install -c conda-forge matplotlib
 conda install pandas
 conda install scipy
 conda install scikit-learn
